@@ -2,5 +2,6 @@
 #define INCL_HPP value
 
 #include <iostream>
+#include <string>
 
 #endif
