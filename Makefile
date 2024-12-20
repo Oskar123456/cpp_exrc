@@ -18,7 +18,7 @@ DEPEXT      := d
 OBJEXT      := o
 
 #Flags, Libraries and Includes
-CFLAGS      := -fopenmp -Wall -g
+CFLAGS      := -fopenmp -g -Wall -Wno-unused-variable
 LIB         := -lm -lpq -lcurl -lpcre2-8 -lgmp
 INC         := -I$(INCDIR) -I$(LIBDIR)
 INCDEP      := -I$(INCDIR)
@@ -34,10 +34,10 @@ include $(ENV_FILES)
 export
 
 #Default Make
+all: resources $(TARGET)
+
 run: resources $(TARGET)
 	./$(TARGETDIR)/$(TARGET)
-
-all: resources $(TARGET)
 
 #Remake
 remake: cleaner all
