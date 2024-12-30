@@ -12,8 +12,10 @@ License:            none
 /* #include "./solutions/aoc13.cpp" */
 /* #include "./solutions/aoc14.cpp" */
 /* #include "./solutions/aoc15.cpp" */
-#include "./solutions/aoc16.cpp"
-#include "./solutions/aoc17.cpp"
+/* #include "./solutions/aoc16.cpp" */
+/* #include "./solutions/aoc17.cpp" */
+/* #include "./solutions/aoc18.cpp" */
+#include "./solutions/aoc19.cpp"
 
 u64 timefn(void (*fn)(void))
 {
@@ -54,16 +56,28 @@ int main(int argc, char *argv[])
 /*     time_to_complete = timefn(aoc15_2); */
 /*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
 
-    /* printf(">> Advent of Code day 16\n"); */
-    /* time_to_complete = timefn(aoc16); */
-    /* printf("\ttime elapsed: %lumcs\n", time_to_complete); */
-    /* time_to_complete = timefn(aoc16_2); */
-    /* printf("\ttime elapsed: %lumcs\n", time_to_complete); */
+/*     printf(">> Advent of Code day 16\n"); */
+/*     time_to_complete = timefn(aoc16); */
+/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
+/*     time_to_complete = timefn(aoc16_2); */
+/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
 
-    printf(">> Advent of Code day 17\n");
-    time_to_complete = timefn(aoc17);
-    printf("\ttime elapsed: %lumcs\n", time_to_complete);
-    time_to_complete = timefn(aoc17_2);
+/*     printf(">> Advent of Code day 17\n"); */
+/*     time_to_complete = timefn(aoc17); */
+/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
+/*     time_to_complete = timefn(aoc17_2); */
+/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
+
+/*     printf(">> Advent of Code day 18\n"); */
+/*     time_to_complete = timefn(aoc18); */
+/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
+/*     time_to_complete = timefn(aoc18_2); */
+/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
+
+    printf(">> Advent of Code day 19\n");
+    /* time_to_complete = timefn(aoc19); */
+    /* printf("\ttime elapsed: %lumcs\n", time_to_complete); */
+    time_to_complete = timefn(aoc19_2);
     printf("\ttime elapsed: %lumcs\n", time_to_complete);
 
     return 0;
