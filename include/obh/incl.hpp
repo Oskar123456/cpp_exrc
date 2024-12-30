@@ -1,13 +1,23 @@
 #ifndef INCL_HPP
 #define INCL_HPP value
 
+#include <string>
+#include <tuple>
+#include <ios>
+#include <map>
+#include <vector>
 #include <iostream>
 #include <fstream>
-#include <string>
+#include <queue>
+#include <set>
+#include <stack>
+#include <algorithm>
+
 #include <cstdint>
-#include <cstdarg>
-#include <vector>
-#include <map>
+#include <cstring>
+#include <cassert>
+
+#include <unistd.h>
 
 typedef  uint8_t  u8;
 typedef  uint16_t u16;

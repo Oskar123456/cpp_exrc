@@ -18,7 +18,7 @@ DEPEXT      := d
 OBJEXT      := o
 
 #Flags, Libraries and Includes
-CFLAGS      := -fopenmp -g -Wall -Wno-unused-variable
+CFLAGS      := -fopenmp -g -Wall -Wno-unused-variable -Wno-sign-compare
 LIB         := -lm -lpq -lcurl -lpcre2-8 -lgmp
 INC         := -I$(INCDIR) -I$(LIBDIR)
 INCDEP      := -I$(INCDIR)
