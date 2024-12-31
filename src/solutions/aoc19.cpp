@@ -77,8 +77,8 @@ void aoc19_2()
     char **targs = NULL;
 
     char line[MAXLINE];
-    FILE *input = fopen("aoc_19_data.txt", "r");
-    /* FILE *input = fopen("resources/aoc_data/aoc_19_data.txt", "r"); */
+    /* FILE *input = fopen("aoc_19_data.txt", "r"); */
+    FILE *input = fopen("resources/aoc_data/aoc_19_data.txt", "r");
     int mode = 0;
     while (fgets(line, MAXLINE, input)) {
         if (strlen(line) < 2) {
@@ -99,48 +99,48 @@ void aoc19_2()
         }
     }
 
-    qsort(ptrns, arrlen(ptrns), sizeof(char*), strlen_cmp);
+    /*******************/
 
-    int arr[512];
+    printf("patterns:\t");
     for (int i = 0; i < arrlen(ptrns); ++i) {
-        int score = word_score(ptrns, i, 0, arr, 0);
-        arrput(ptrn_scores, score);
-    }
-
-    for (int i = 0; i < arrlen(ptrns); ++i) {
-        printf("%s (%d)", ptrns[i], ptrn_scores[i]);
-        if (i < arrlen(ptrns) - 1) printf(", ");
+        printf("%s", ptrns[i]);
+        if (i < arrlen(ptrns) - 1)
+            printf(", ");
     }
     printf("\n");
 
     for (int i = 0; i < arrlen(targs); ++i) {
-        int idx = 0;
-        int score = 1;
-        int t_len = strlen(targs[i]);
-        while (targs[i][idx]) {
-            bool m = false;
-            for (int j = arrlen(ptrns) - 1; j >= 0; --j) {
-                /* printf("[scoring] testing if %s matched by %s\n", &targs[i][idx], ptrns[j]); */
-                int p_len = strlen(ptrns[j]);
-                if (p_len > t_len - idx)
+        char *s = targs[i];
+        int slen = strlen(s);
+        u64 matched[slen + 1] = {0};
+        matched[0] = 1;
+
+        char res[1024];
+        int nwritten = 0;
+        nwritten += sprintf(res, "_%s_:\t", s);
+
+        for (int k = 0; k < slen; ++k) {
+            if (!matched[k])
+                continue;
+            for (int j = 0; j < arrlen(ptrns); ++j) {
+                char *p = ptrns[j];
+                int plen = strlen(p);
+                if (plen > slen - k)
                     continue;
-                if (strncmp((const char*)&targs[i][idx], ptrns[j], p_len))
-                    continue;
-                printf("[scoring] %s matched by %s (%d) for total %d * %d = %d\n",
-                        &targs[i][idx], ptrns[j], ptrn_scores[j], ptrn_scores[j], score, ptrn_scores[j] * score);
-                idx += p_len;
-                score *= ptrn_scores[j];
-                m = true;
-                break;
-            }
-            if (!m) {
-                score = 0;
-                break;
+                if (strncmp(&s[k], p, plen) == 0) {
+                    matched[k + plen] += matched[k];
+                }
             }
         }
-        printf("there are %d ways to make %s\n", score, targs[i]);
-        result += score;
+
+        if (matched[slen]) {
+            printf("✓ %s (%lu)\n", res, matched[slen]);
+            result += matched[slen];
+        } else
+            printf("☒ %s (%lu)\n", res, matched[slen]);
     }
+
+    /*******************/
 
     printf("aoc19_2:  \t%ld\n", result);
 }
