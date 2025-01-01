@@ -19,6 +19,7 @@ License:            none
 /* #include "./solutions/aoc20.cpp" */
 /* #include "./solutions/aoc21.cpp" */
 #include "./solutions/aoc24.cpp"
+#include "./solutions/aoc25.cpp"
 
 u64 timefn(void (*fn)(void))
 {

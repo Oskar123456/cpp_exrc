@@ -13,8 +13,9 @@ using namespace std;
 
 struct gate {
     int id;
-    string a, b;
+    string a, b, out;
     string op;
+    bool done;
 };
 
 void aoc24_2()
@@ -26,12 +27,12 @@ void aoc24()
     i64 result = 0;
 
     vector<gate> gates;
-    map<string, bool> signals;
-    map<string, int> signal_deps;
+    map<string, int> signals;
+    vector<pair<string, string>> signal_deps;
 
     string line;
-    ifstream input("aoc_24_data.txt", ios_base::in);
-    /* ifstream input("resources/aoc_data/aoc_24_data.txt", ios_base::in); */
+    /* ifstream input("aoc_24_data.txt", ios_base::in); */
+    ifstream input("resources/aoc_data/aoc_24_data.txt", ios_base::in);
     int mode = 0;
     while (getline(input, line, '\n')) {
         if (line.length() < 1) {
@@ -52,17 +53,48 @@ void aoc24()
                 }
                 line_split[line_split.size() - 1].push_back(c);
             }
-            gates.push_back({(int)gates.size(), line_split[0], line_split[2], line_split[1]});
-            signal_deps.emplace(line_split[4], gates.size() - 1);
+            signals.emplace(line_split[0], -1);
+            signals.emplace(line_split[2], -1);
+            signals.emplace(line_split[4], -1);
+            gates.push_back({(int)gates.size(), line_split[0], line_split[2], line_split[4], line_split[1], false});
+            signal_deps.push_back(make_pair(line_split[4], line_split[0]));
+            signal_deps.push_back(make_pair(line_split[4], line_split[2]));
+        }
+    }
+
+/*     for (auto sb : signals) */
+/*         cout << sb.first << "," << sb.second << endl; */
+/*     for (auto g : gates) */
+/*         cout << g.a << " " << g.op << " " << g.b << " (" << g.id << ")" << endl; */
+/*     for (auto sd : signal_deps) */
+/*         cout << sd.first << " deps on " << sd.second << endl; */
+
+    int done = 0;
+    while (done < gates.size()) {
+        for (int i = 0; i < gates.size(); ++i) {
+            gate g = gates[i];
+            int a_val = signals[g.a];
+            int b_val = signals[g.b];
+            if (g.done || a_val < 0 || b_val < 0)
+                continue;
+            gates[i].done = true;
+            if (g.op == "AND") signals[g.out] = a_val & b_val;
+            if (g.op == "OR") signals[g.out]  = a_val | b_val;
+            if (g.op == "XOR") signals[g.out] = a_val ^ b_val;
+            /* printf("update %s to %d\n", g.out.c_str(), signals[g.out]); */
+            done++;
         }
     }
 
     for (auto sb : signals)
         cout << sb.first << "," << sb.second << endl;
-    for (auto g : gates)
-        cout << g.a << " " << g.op << " " << g.b << " (" << g.id << ")" << endl;
-    for (auto sd : signal_deps)
-        cout << sd.first << " deps on " << sd.second << endl;
+
+    int i = 0;
+    for (auto s : signals) {
+        if (s.first[0] != 'z')
+            continue;
+        result += (i64)s.second << i++;
+    }
 
     printf("aoc24:  \t%ld\n", result);
 }
