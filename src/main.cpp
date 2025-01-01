@@ -96,10 +96,16 @@ int main(int argc, char *argv[])
 /*     time_to_complete = timefn(aoc21_2); */
 /*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
 
-    printf(">> Advent of Code day 24\n");
-    time_to_complete = timefn(aoc24);
+/*     printf(">> Advent of Code day 24\n"); */
+/*     time_to_complete = timefn(aoc24); */
+/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
+/*     time_to_complete = timefn(aoc24_2); */
+/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
+
+    printf(">> Advent of Code day 25\n");
+    time_to_complete = timefn(aoc25);
     printf("\ttime elapsed: %lumcs\n", time_to_complete);
-    time_to_complete = timefn(aoc24_2);
+    time_to_complete = timefn(aoc25_2);
     printf("\ttime elapsed: %lumcs\n", time_to_complete);
 
     return 0;
