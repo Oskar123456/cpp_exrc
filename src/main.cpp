@@ -18,8 +18,9 @@ License:            none
 /* #include "./solutions/aoc19.cpp" */
 /* #include "./solutions/aoc20.cpp" */
 /* #include "./solutions/aoc21.cpp" */
-#include "./solutions/aoc24.cpp"
-#include "./solutions/aoc25.cpp"
+/* #include "./solutions/aoc24.cpp" */
+/* #include "./solutions/aoc25.cpp" */
+#include "./solutions/codewars.cpp"
 
 u64 timefn(void (*fn)(void))
 {
@@ -42,71 +43,50 @@ int main(int argc, char *argv[])
 /*     time_to_complete = timefn(aoc12_2); */
 /*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
 
-/*     printf(">> Advent of Code day 13\n"); */
-/*     time_to_complete = timefn(aoc13); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
-/*     time_to_complete = timefn(aoc13_2); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
+    std::string strs[] = {"lol ok buddy", "ok buddy lol", "buddy budde biddee"};
 
-/*     printf(">> Advent of Code day 14\n"); */
-/*     time_to_complete = timefn(aoc14); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
-/*     time_to_complete = timefn(aoc14_2); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
+    for (int i = 0; i < sizeof(strs) / sizeof(std::string); ++i) {
+        cout << to_weird_case(strs[i]) << endl;
+    }
 
-/*     printf(">> Advent of Code day 15\n"); */
-/*     time_to_complete = timefn(aoc15); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
-/*     time_to_complete = timefn(aoc15_2); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
+    multiplication_table(10);
 
-/*     printf(">> Advent of Code day 16\n"); */
-/*     time_to_complete = timefn(aoc16); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
-/*     time_to_complete = timefn(aoc16_2); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
+    for (int i = 0; i < 100000; ++i) {
+        vector<ull> fibres = ProdFib::productFib(i);
+        if (fibres[2])
+            cout << fibres[0] << " * " << fibres[1] << " = " << i << " : " << (fibres[2] ? "true" : "false") << endl;
+    }
 
-/*     printf(">> Advent of Code day 17\n"); */
-/*     time_to_complete = timefn(aoc17); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
-/*     time_to_complete = timefn(aoc17_2); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
+    cout << WeightSort::orderWeight("2000 10003 1234000 44444444 9999 11 11 22 123") << endl;
 
-/*     printf(">> Advent of Code day 18\n"); */
-/*     time_to_complete = timefn(aoc18); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
-/*     time_to_complete = timefn(aoc18_2); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
-
-/*     printf(">> Advent of Code day 19\n"); */
-/*     time_to_complete = timefn(aoc19); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
-/*     time_to_complete = timefn(aoc19_2); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
-
-/*     printf(">> Advent of Code day 20\n"); */
-/*     time_to_complete = timefn(aoc20); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
-/*     time_to_complete = timefn(aoc20_2); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
-
-/*     printf(">> Advent of Code day 21\n"); */
-/*     time_to_complete = timefn(aoc21); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
-/*     time_to_complete = timefn(aoc21_2); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
-
-/*     printf(">> Advent of Code day 24\n"); */
-/*     time_to_complete = timefn(aoc24); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
-/*     time_to_complete = timefn(aoc24_2); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
-
-    printf(">> Advent of Code day 25\n");
-    time_to_complete = timefn(aoc25);
-    printf("\ttime elapsed: %lumcs\n", time_to_complete);
-    time_to_complete = timefn(aoc25_2);
-    printf("\ttime elapsed: %lumcs\n", time_to_complete);
 
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
