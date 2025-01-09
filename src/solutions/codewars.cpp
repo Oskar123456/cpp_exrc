@@ -139,9 +139,52 @@ class WeightSort
         }
 };
 
+using ull = unsigned long long;
 
+map<ull, ull> exp_sum_mem;
+map<ull, vector<vector<ull>>> exp_sum_vec_mem;
 
+vector<vector<ull>> exp_sum_vecs(ull n)
+{
+    if (n == 1) return { {1} };
+    if (exp_sum_vec_mem.count(n)) return exp_sum_vec_mem.find(n)->second;
 
+    vector<vector<ull>> r = {{n}};
+
+    for (ull i = 1; i <= n / 2; ++i) {
+        ull rem = n - i;
+        vector<vector<ull>> r_rem = exp_sum_vecs(rem);
+        for (vector<ull> v : r_rem) {
+            v.push_back(i);
+            bool ok = true;
+            for (int j = 0; j < v.size() - 1; j++) {
+                if (v[j] < v[j + 1]) ok = false;
+            }
+            if (!ok) continue;
+            r.push_back(v);
+        }
+        exp_sum_vec_mem.emplace(rem, r_rem);
+    }
+
+    return r;
+}
+
+ull exp_sum(unsigned int n) {
+    if (exp_sum_mem.count(n)) return exp_sum_mem.find(n)->second;
+    vector<vector<ull>> res = exp_sum_vecs(n);
+    return res.size();
+}
+
+string rot13(string msg)
+{
+    string ret_str;
+    for (char c : msg) {
+        char offs = isupper(c) ? 'A' : 'a';
+        if (isalpha(c)) c = (((c - offs) + 13) % 26) + offs;
+        ret_str.push_back(c);
+    }
+    return ret_str;
+}
 
 
 

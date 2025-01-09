@@ -43,22 +43,10 @@ int main(int argc, char *argv[])
 /*     time_to_complete = timefn(aoc12_2); */
 /*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
 
-    std::string strs[] = {"lol ok buddy", "ok buddy lol", "buddy budde biddee"};
 
-    for (int i = 0; i < sizeof(strs) / sizeof(std::string); ++i) {
-        cout << to_weird_case(strs[i]) << endl;
-    }
-
-    multiplication_table(10);
-
-    for (int i = 0; i < 100000; ++i) {
-        vector<ull> fibres = ProdFib::productFib(i);
-        if (fibres[2])
-            cout << fibres[0] << " * " << fibres[1] << " = " << i << " : " << (fibres[2] ? "true" : "false") << endl;
-    }
-
-    cout << WeightSort::orderWeight("2000 10003 1234000 44444444 9999 11 11 22 123") << endl;
-
+    string test_rot_13 = "test";
+    string test_rot_13_ = rot13(test_rot_13);
+    cout << test_rot_13 << " : " << test_rot_13_ << endl;
 
     return 0;
 }
