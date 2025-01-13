@@ -44,9 +44,7 @@ int main(int argc, char *argv[])
 /*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
 
 
-    string test_rot_13 = "test";
-    string test_rot_13_ = rot13(test_rot_13);
-    cout << test_rot_13 << " : " << test_rot_13_ << endl;
+    cout << path_finder("......\n......\n......\n......\n.....W\n....W.") << endl;
 
     return 0;
 }
