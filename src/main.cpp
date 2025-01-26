@@ -44,9 +44,9 @@ int main(int argc, char *argv[])
 /*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
 
 
-    string s = "a2", e = "b5";
+    string s = "534753", e = "00544547757453576356735";
 
-    cout << knight(s, e) << endl;
+    cout << multiply(s, e) << endl;
 
     return 0;
 }

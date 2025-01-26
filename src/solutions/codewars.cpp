@@ -207,10 +207,6 @@ string multiply(string a, string b)
 {
     string res(a.length() + b.length() + 1, '0');
 
-    /* cout << a << endl; */
-    /* cout << b << endl; */
-    /* cout << res.length() << endl; */
-
     int i;
     for (i = a.length() - 1; i >= 0; --i) {
         int av = a[i] - '0';
@@ -319,15 +315,16 @@ int operator<(const cvert& a, const cvert& b) { return a.d > b.d; }
 int knight(string start, string finish)
 {
     vec2i vns[8];
-    vec2i vs = {tolower(start[0]) - 'a', tolower(start[1]) - '0'};
-    vec2i ve = {tolower(finish[0]) - 'a', tolower(finish[1]) - '0'};
+    vec2i vs = {8 - (tolower(start[1]) - '0'), tolower(start[0]) - 'a'};
+    vec2i ve = {8 - (tolower(finish[1]) - '0'), tolower(finish[0]) - 'a'};
     priority_queue<cvert> vq;
     vq.push({0, vs.i, vs.j});
 
-    int dist[8][8];
-    for (int i = 0; i < 8; ++i)
-        for (int j = 0; j < 8; ++j)
-            dist[i][j] = INT32_MAX;
+    vector<vector<int>> dist(8, vector(8, INT32_MAX));
+    /* int dist[8][8]; */
+    /* for (int i = 0; i < 8; ++i) */
+    /*     for (int j = 0; j < 8; ++j) */
+    /*         dist[i][j] = INT32_MAX; */
 
     while(!vq.empty()) {
         cvert v = vq.top(); vq.pop();
@@ -340,14 +337,18 @@ int knight(string start, string finish)
         vns[6] = {v.i - 1, v.j - 2};
         vns[7] = {v.i + 1, v.j - 2};
 
-        u8 board[8][8]; memset(board, 0, 64);
+        /* u8 board[8][8]; memset(board, 0, 64); */
 
         for (int i = 0; i < 8; ++i) {
             vec2i vn = vns[i];
             if (vn.i < 0 || vn.i >= 8 || vn.j < 0 || vn.j >= 8)
                 continue;
-            board[vn.i][vn.j] = 1;
-
+            /* board[vn.i][vn.j] = 1; */
+            if (dist[vn.i][vn.j] <= v.d + 1)
+                continue;
+            dist[vn.i][vn.j] = v.d + 1;
+            if (vn != ve)
+                vq.push({v.d + 1, vn.i, vn.j});
         }
 
         /* for (int i = 0; i < 8; ++i) { */
@@ -364,8 +365,22 @@ int knight(string start, string finish)
         /* printf("\n"); */
     }
 
+    for (int i = 0; i < 8; ++i) {
+        for (int j = 0; j < 8; ++j) {
+            if (i == vs.i && vs.j == j) printf("   K ");
+            else if (i == ve.i && ve.j == j) printf("[%3d]", dist[i][j]);
+            else printf(" %3d ", dist[i][j]);
+        }
+        printf("\n");
+    }
 
-    return 0;
+    for (int i = 0; i < 8; ++i) {
+        printf("---");
+    }
+    printf("\n");
+
+
+    return dist[ve.i][ve.j];
 }
 
 
