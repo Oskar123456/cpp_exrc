@@ -310,7 +310,63 @@ bool path_finder_2(string maze)
     return ds.count(e);
 }
 
+struct cvert {
+    int d;
+    int i, j;
+};
+int operator<(const cvert& a, const cvert& b) { return a.d > b.d; }
 
+int knight(string start, string finish)
+{
+    vec2i vns[8];
+    vec2i vs = {tolower(start[0]) - 'a', tolower(start[1]) - '0'};
+    vec2i ve = {tolower(finish[0]) - 'a', tolower(finish[1]) - '0'};
+    priority_queue<cvert> vq;
+    vq.push({0, vs.i, vs.j});
+
+    int dist[8][8];
+    for (int i = 0; i < 8; ++i)
+        for (int j = 0; j < 8; ++j)
+            dist[i][j] = INT32_MAX;
+
+    while(!vq.empty()) {
+        cvert v = vq.top(); vq.pop();
+        vns[0] = {v.i - 2, v.j - 1};
+        vns[1] = {v.i - 2, v.j + 1};
+        vns[2] = {v.i - 1, v.j + 2};
+        vns[3] = {v.i + 1, v.j + 2};
+        vns[4] = {v.i + 2, v.j - 1};
+        vns[5] = {v.i + 2, v.j + 1};
+        vns[6] = {v.i - 1, v.j - 2};
+        vns[7] = {v.i + 1, v.j - 2};
+
+        u8 board[8][8]; memset(board, 0, 64);
+
+        for (int i = 0; i < 8; ++i) {
+            vec2i vn = vns[i];
+            if (vn.i < 0 || vn.i >= 8 || vn.j < 0 || vn.j >= 8)
+                continue;
+            board[vn.i][vn.j] = 1;
+
+        }
+
+        /* for (int i = 0; i < 8; ++i) { */
+        /*     for (int j = 0; j < 8; ++j) { */
+        /*         if (i == v.i && v.j == j) printf(" K "); */
+        /*         else printf("%s", board[i][j] ? " . " : " o "); */
+        /*     } */
+        /*     printf("\n"); */
+        /* } */
+
+        /* for (int i = 0; i < 8; ++i) { */
+        /*     printf("---"); */
+        /* } */
+        /* printf("\n"); */
+    }
+
+
+    return 0;
+}
 
 
 

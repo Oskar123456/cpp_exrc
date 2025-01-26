@@ -43,10 +43,10 @@ int main(int argc, char *argv[])
 /*     time_to_complete = timefn(aoc12_2); */
 /*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
 
-    string maze = ".W.\n.W.\n...";
-    bool pathable = path_finder_2(maze);
 
-    cout << pathable << endl;
+    string s = "a2", e = "b5";
+
+    cout << knight(s, e) << endl;
 
     return 0;
 }
