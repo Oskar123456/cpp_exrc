@@ -445,18 +445,27 @@ int path_finder2(std::string maze)
 string longest_palindrome(string input)
 {
     int l = input.length();
-    int i_best = 0, j_best = 0;
-    int i_best_e = 0, j_best_e = 0;
+    int s = 0, smax = 0;
 
     for (int i = 0; i < l; ++i) {
-        for (int j = 0; i + j < l; ++j) {
+        for (int j = 0; j <= 1; ++j) {
+            int lo = i;
+            int hi = i + j;
+            while (lo >= 0 && hi < l && input[lo] == input[hi]) {
+                int scur = hi - lo + 1;
+                if (scur > smax) {
+                    smax = scur;
+                    s = lo;
+                }
+                lo--;
+                hi++;
+            }
         }
     }
 
-    printf("odd: %d %d\n", i_best, j_best);
-    printf("even: %d %d\n", i_best_e, j_best_e);
+    printf("%d %d\n", s, smax);
 
-    return input.substr(i_best - j_best, j_best * 2 + 1);
+    return input.substr(s, smax);
 }
 
 

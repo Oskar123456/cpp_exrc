@@ -51,7 +51,9 @@ int main(int argc, char *argv[])
     string line;
     while (getline(cin, line, '\n')) {
         cout << "in: " << line << endl;
-        cout << "lp: " << longest_palindrome(line) << endl;
+        cout << "lp: " << endl;
+        cout << longest_palindrome(line) << endl;
+        cout << endl;
     }
 
     return 0;
