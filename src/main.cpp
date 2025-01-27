@@ -43,10 +43,16 @@ int main(int argc, char *argv[])
 /*     time_to_complete = timefn(aoc12_2); */
 /*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
 
+    string m = "010\n" "010\n" "010";
+    string m2 = "010\n" "101\n" "010";
 
-    string s = "534753", e = "00544547757453576356735";
+    string p = "aoeeoaoo";
 
-    cout << multiply(s, e) << endl;
+    string line;
+    while (getline(cin, line, '\n')) {
+        cout << "in: " << line << endl;
+        cout << "lp: " << longest_palindrome(line) << endl;
+    }
 
     return 0;
 }

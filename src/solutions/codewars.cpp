@@ -383,11 +383,81 @@ int knight(string start, string finish)
     return dist[ve.i][ve.j];
 }
 
+struct vec2 { int i, j; };
+vec2 DIRS[4] = { {-1, 0}, {0, 1}, {1, 0}, {0, -1} };
+
+int path_finder2(std::string maze)
+{
+    int w = 0, h = 0;
+    vector<string> m(1);
+    for (int i = 0; i < maze.length(); ++i) {
+        if (maze[i] == '\n') {
+            if (w == 0)
+                w = i;
+            m.push_back(string());
+            h++;
+            continue;
+        }
+        m[h].push_back(maze[i]);
+    }
+    h++;
 
 
+    for (string s : m)
+        cout << s << endl;
+
+    int dist[h][w];
+    for (int i = 0; i < h; ++i)
+        for (int j = 0; j < w; ++j)
+            dist[i][j] = INT32_MAX;
+    dist[0][0] = 0;
+
+    priority_queue<cvert> q;
+    q.push({0, 0, 0});
+
+    while (!q.empty()) {
+        cvert v = q.top(); q.pop();
+        for (vec2 dir : DIRS) {
+            int i = v.i + dir.i;
+            int j = v.j + dir.j;
+            if (i < 0 || i >= h || j < 0 || j >= w)
+                continue;
+            int d = v.d + abs(m[i][j] - m[v.i][v.j]);
+            if (dist[i][j] <= d)
+                continue;
+            dist[i][j] = d;
+            if (!(i == h - 1 && j == w - 1))
+                q.push({d, i, j});
+        }
+    }
+
+    for (int i = 0; i < h; ++i) {
+        for (int j = 0; j < w; ++j) {
+            printf("%3d", dist[i][j]);
+        }
+        printf("\n");
+    }
+
+    return dist[h - 1][w - 1];
+}
 
 
+string longest_palindrome(string input)
+{
+    int l = input.length();
+    int i_best = 0, j_best = 0;
+    int i_best_e = 0, j_best_e = 0;
 
+    for (int i = 0; i < l; ++i) {
+        for (int j = 0; i + j < l; ++j) {
+        }
+    }
+
+    printf("odd: %d %d\n", i_best, j_best);
+    printf("even: %d %d\n", i_best_e, j_best_e);
+
+    return input.substr(i_best - j_best, j_best * 2 + 1);
+}
 
 
 
