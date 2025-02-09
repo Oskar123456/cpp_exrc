@@ -88,14 +88,21 @@ Json_Field json_parse_field(string& str, int& i)
     if (i >= str.length() || str[i] != '"')
         goto FAIL;
 
-    json_parse_str(str, jsf.name, i);
-    if (i >= str.length() || str[i] != '"')
+    /* printf("at beginning of id\n"); */
+
+    json_parse_str(str, jsf.name, ++i);
+    if (i >= str.length())
         goto FAIL;
 
-    if (str[++i] != ':')
-        goto FAIL;
+    printf("parsed id \"%s\"\n", jsf.name.c_str());
 
     json_skip_ws(str, i);
+    if (str[i] != ':')
+        goto FAIL;
+
+    /* printf("at beginning of value\n"); */
+
+    json_skip_ws(str, ++i);
     if (i >= str.length())
         goto FAIL;
 
@@ -103,6 +110,7 @@ Json_Field json_parse_field(string& str, int& i)
         case '"':
             jsf.type = JT_STRING;
             json_parse_str(str, jsf.str, ++i);
+            printf("parsed value \"%s\"\n", jsf.str.c_str());
             break;
         default:
             goto FAIL;
