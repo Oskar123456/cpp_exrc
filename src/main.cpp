@@ -20,7 +20,8 @@ License:            none
 /* #include "./solutions/aoc21.cpp" */
 /* #include "./solutions/aoc24.cpp" */
 /* #include "./solutions/aoc25.cpp" */
-#include "./solutions/codewars.cpp"
+/* #include "./solutions/codewars.cpp" */
+#include "./solutions/json_parser.cpp"
 
 u64 timefn(void (*fn)(void))
 {
@@ -43,18 +44,24 @@ int main(int argc, char *argv[])
 /*     time_to_complete = timefn(aoc12_2); */
 /*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
 
-    string m = "010\n" "010\n" "010";
-    string m2 = "010\n" "101\n" "010";
 
-    string p = "aoeeoaoo";
+    /* ifstream in("resources/weather_api.json"); */
+    ifstream in("resources/only_strings.json");
+    string in_str;
 
-    string line;
-    while (getline(cin, line, '\n')) {
-        cout << "in: " << line << endl;
-        cout << "lp: " << endl;
-        cout << longest_palindrome(line) << endl;
-        cout << endl;
+    char b[4096];
+    while (in.read(b, sizeof(b))) {
+        in_str.append(b, sizeof(b));
     }
+    in_str.append(b, in.gcount());
+
+    printf("%s[+%ld...]\n", in_str.substr(0, 100).c_str(), in_str.length() - 100);
+
+    Json json = json_parse(in_str);
+
+    string json_str = json_write(json);
+
+    cout << json_str << endl;
 
     return 0;
 }

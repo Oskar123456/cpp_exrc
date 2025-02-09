@@ -468,6 +468,87 @@ string longest_palindrome(string input)
     return input.substr(s, smax);
 }
 
+string encode_rail_fence_cipher(const string &str, int n)
+{
+    vector<string> rfc(n);
+    int rfc_idx = 0, incr = 1;;
+
+    for (int i = 0; i < str.length(); ++i) {
+        rfc[rfc_idx].push_back(str[i]);
+        if (rfc_idx == n - 1)
+            incr = -1;
+        else if (rfc_idx == 0)
+            incr = 1;
+        rfc_idx += incr;
+    }
+
+    string s;
+    for (int i = 0; i < n; ++i)
+        s += rfc[i];
+
+    return s;
+}
+
+string decode_rail_fence_cipher(const string &str, int n)
+{
+    if (n <= 0) return str;
+
+    int L = 2 * (n - 1);
+
+    vector<string> rfc(n);
+    int str_idx = 0;
+
+    string str_pad(str);
+    if (str.length() % L)
+        str_pad.resize(str.length() + (L - (str.length() % L)), '?');
+
+    cout << "str_pad: " << str_pad << endl;
+
+    for (int i = 0; i < n / 2; ++i) {
+        int l = str_pad.length() / (2 * (n - i - 1));
+        rfc[i] = str_pad.substr(0, l);
+        rfc[n - i - 1] = str_pad.substr(str_pad.length() - l - 2, l);
+        str_pad = str_pad.substr(l, (str_pad.length() - 2 * l - 1));
+    }
+
+    rfc[n / 2] = str_pad;
+
+    for (string ss : rfc) {
+        cout << ss << endl;
+    }
+
+    vector<int> rfc_idxs(n, 0);
+    string s;
+
+    int rfc_idx = 0, incr = 1;;
+
+    for (int i = 0; i < str.length(); ++i) {
+        s.push_back(rfc[rfc_idx][rfc_idxs[rfc_idx]++]);
+        if (rfc_idx == n - 1)
+            incr = -1;
+        else if (rfc_idx == 0)
+            incr = 1;
+        rfc_idx += incr;
+    }
+
+    cout << s << endl;
+
+    return s;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
