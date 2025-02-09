@@ -23,15 +23,31 @@ typedef struct Json_Object Json_Object;
 Json json_parse(string& str);
 int json_parse_str(string& str, string& str_out, int& i);
 Json_Field json_parse_num(string& str, int& i);
-Json_Object json_parse_obj(string& str, int& i);
+void json_parse_obj(string& str, Json_Object& obj, int& i);
 Json_Field json_parse_arr(string& str, int& i);
 Json_Field json_parse_field(string& str, int& i);
+void json_parse_error(string& str, int& i);
+/* write */
+string json_write(Json& json);
+void json_write_object(string& str, Json_Object obj, int depth);
 /* util */
 int json_skip_ws(string& str, int& i);
 /* implementation */
 struct Json_Object { vector<Json_Field> children; };
 struct Json_Field { string name; Json_Type type; string str; double num; bool _bool; Json_Object obj; vector<Json_Field> arr; };
 struct Json { Json_Type type; Json_Field field; };
+
+static int indentation = 2;
+
+void json_write_newline_indent(string& str, bool comma, int depth)
+{
+    if (comma)
+        str.push_back(',');
+    str.push_back('\n');
+    for (int i = 0; i < depth * indentation; ++i) {
+        str.push_back(' ');
+    }
+}
 
 string json_write(Json& json)
 {
@@ -40,13 +56,56 @@ string json_write(Json& json)
     if (json.type == JT_NONE)
         str.append("error parsing...");
 
-    if (json.type == JT_OBJECT)
-        str.push_back('{');
+    /* if (json.type == JT_OBJECT) */
+    /*     str.push_back('{'); */
+    /* if (json.type == JT_ARRAY) */
+    /*     str.push_back('['); */
 
-    if (json.type == JT_OBJECT)
-        str.push_back('}');
+    switch (json.type) {
+        case JT_OBJECT:
+            json_write_object(str, json.field.obj, 1);
+            break;
+        case JT_ARRAY:
+            break;
+        default:
+            break;
+    }
+
+    /* if (json.type == JT_OBJECT) */
+    /*     str.push_back('}'); */
+    /* if (json.type == JT_ARRAY) */
+    /*     str.push_back(']'); */
 
     return str;
+}
+
+void json_write_object(string& str, Json_Object obj, int depth)
+{
+    /* for (int i = 0; i < depth * indentation; ++i) */
+    /*     str.push_back(' '); */
+
+    str.push_back('{');
+
+    for (int i = 0; i < obj.children.size(); ++i) {
+        Json_Field jsf = obj.children[i];
+        json_write_newline_indent(str, (i != 0), depth);
+        switch (jsf.type) {
+            case (JT_STRING):
+                str.append(jsf.name + " : " + jsf.str);
+                break;
+            case JT_OBJECT:
+                str.append(jsf.name + " : ");
+                json_write_object(str, jsf.obj, depth + 1);
+                break;
+            default:
+                break;
+        }
+    }
+
+    str.push_back('\n');
+    for (int i = 0; i < (depth - 1) * indentation; ++i)
+        str.push_back(' ');
+    str.append("}");
 }
 
 int json_skip_ws(string& str, int& i)
@@ -66,7 +125,7 @@ Json json_parse(string& str)
     if (str[i] == '{') {
         js.type = JT_OBJECT;
         js.field.type = JT_OBJECT;
-        js.field.obj = json_parse_obj(str, ++i);
+        json_parse_obj(str, js.field.obj, ++i);
     }
     else if (str[i] == '[') {
         /* js.type = JT_ARRAY; */
@@ -94,7 +153,7 @@ Json_Field json_parse_field(string& str, int& i)
     if (i >= str.length())
         goto FAIL;
 
-    printf("parsed id \"%s\"\n", jsf.name.c_str());
+    /* printf("parsed id \"%s\"\n", jsf.name.c_str()); */
 
     json_skip_ws(str, i);
     if (str[i] != ':')
@@ -110,7 +169,12 @@ Json_Field json_parse_field(string& str, int& i)
         case '"':
             jsf.type = JT_STRING;
             json_parse_str(str, jsf.str, ++i);
-            printf("parsed value \"%s\"\n", jsf.str.c_str());
+            /* printf("parsed value \"%s\"\n", jsf.str.c_str()); */
+            break;
+        case '{':
+            jsf.type = JT_OBJECT;
+            json_parse_obj(str, jsf.obj, ++i);
+            /* printf("parsed value \"%s\"\n", jsf.str.c_str()); */
             break;
         default:
             goto FAIL;
@@ -120,10 +184,7 @@ Json_Field json_parse_field(string& str, int& i)
     return jsf;
 FAIL:
     jsf.type = JT_NONE;
-    printf("failed parsing at %d:\n%s[[[%c]]]%s[+%d...]\n", i,
-            str.substr(0, i).c_str(), str[i],
-            str.substr(i + 1, (min((int)str.length() - i - 1, 20))).c_str(),
-            (int)str.length() - i - 1 - 20);
+    json_parse_error(str, i);
     return jsf;
 }
 
@@ -159,19 +220,19 @@ Json_Field json_parse_bool(string& str, int& i)
     return jsf;
 }
 
-Json_Object json_parse_obj(string& str, int& i)
+void json_parse_obj(string& str, Json_Object& obj, int& i)
 {
-    Json_Object jso;
-
     for (;;) {
         Json_Field field = json_parse_field(str, i);
         if (field.type != JT_NONE)
-            jso.children.push_back(field);
+            obj.children.push_back(field);
         else
             break;
+        json_skip_ws(str, i);
+        if (str[i] != ',')
+            break;
+        ++i;
     }
-
-    return jso;
 }
 
 Json_Field json_parse_arr(string& str, int& i)
@@ -185,7 +246,13 @@ void json_parse_id(string& str, string& str_out, int& i)
 {
 }
 
-
+void json_parse_error(string& str, int& i)
+{
+    printf("failed parsing at %d:\n%s[[[%c]]]%s[+%d...]\n", i,
+            str.substr(0, i).c_str(), str[i],
+            str.substr(i + 1, (min((int)str.length() - i - 1, 20))).c_str(),
+            (int)str.length() - i - 1 - 20);
+}
 
 
 
