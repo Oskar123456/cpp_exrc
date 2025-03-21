@@ -6,62 +6,62 @@ Description:        exercise template
 License:            none
 *****************************************************/
 
-#include "../include/obh/incl.hpp"
+#include <obh/incl.hpp>
+#include <obh/util.hpp>
 
-/* #include "./solutions/aoc12.cpp" */
-/* #include "./solutions/aoc13.cpp" */
-/* #include "./solutions/aoc14.cpp" */
-/* #include "./solutions/aoc15.cpp" */
-/* #include "./solutions/aoc16.cpp" */
-/* #include "./solutions/aoc17.cpp" */
-/* #include "./solutions/aoc18.cpp" */
-/* #include "./solutions/aoc19.cpp" */
-/* #include "./solutions/aoc20.cpp" */
-/* #include "./solutions/aoc21.cpp" */
-/* #include "./solutions/aoc24.cpp" */
-/* #include "./solutions/aoc25.cpp" */
-/* #include "./solutions/codewars.cpp" */
-#include "./solutions/json_parser.cpp"
+#include <codecvt>
+#include <string>
+#include <locale>
+#include <wctype.h>
+#include <wchar.h>
 
-u64 timefn(void (*fn)(void))
+using namespace std;
+
+struct vertex {
+    int dist;
+    vec2i pos;
+};
+int operator<(const vertex& a, const vertex& b) { return a.dist < b.dist; }
+
+string format_duration(int seconds)
 {
-    struct timespec t, at;
-    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &t);
-    fn();
-    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &at);
-    return (at.tv_nsec - t.tv_nsec) / 1000 + (at.tv_sec - t.tv_sec) * 1000000;
+    if (seconds < 1) {
+        return "now";
+    }
+
+    string u[] = { "year", "day", "hour", "minute", "second" };
+    int us[] = { INT32_MAX, 365 * 24 * 60 * 60, 24 * 60 * 60, 60 * 60, 60, 1 };
+
+    vector<int> ts;
+    vector<string> units;
+
+    for (int i = 0; i < 5; ++i) {
+        int t = (seconds % us[i]) / us[i + 1];
+        if (t > 0) {
+            ts.push_back(t);
+            units.push_back(u[i]);
+        }
+    }
+
+    string str;
+
+    for (size_t i = 0; i < ts.size(); ++i) {
+        if (i == ts.size() - 1 && ts.size() > 1) {
+            str += " and ";
+        } else if (i > 0) {
+            str += ", ";
+        }
+        str += to_string(ts[i]) + " " + units[i] + (ts[i] > 1 ? "s" : "");
+    }
+
+    return str;
 }
 
 int main(int argc, char *argv[])
 {
-    using namespace std;
-
-    u64 time_to_complete;
-
-/*     printf(">> Advent of Code day 12\n"); */
-/*     time_to_complete = timefn(aoc12); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
-/*     time_to_complete = timefn(aoc12_2); */
-/*     printf("\ttime elapsed: %lumcs\n", time_to_complete); */
-
-
-    /* ifstream in("resources/weather_api.json"); */
-    ifstream in("resources/only_strings.json");
-    string in_str;
-
-    char b[4096];
-    while (in.read(b, sizeof(b))) {
-        in_str.append(b, sizeof(b));
-    }
-    in_str.append(b, in.gcount());
-
-    printf("%s[+%ld...]\n", in_str.substr(0, 100).c_str(), in_str.length() - 100);
-
-    Json json = json_parse(in_str);
-
-    string json_str = json_write(json);
-
-    cout << json_str << endl;
+    cout << format_duration(1) << endl;
+    cout << format_duration(777777777) << endl;
+    cout << format_duration(0) << endl;
 
     return 0;
 }

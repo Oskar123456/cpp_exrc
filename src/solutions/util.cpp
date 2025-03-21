@@ -3,4 +3,34 @@
 
 #include "../../include/obh/incl.hpp"
 
+using namespace std;
+
+u64 timefn(void (*fn)(void))
+{
+    struct timespec t, at;
+    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &t);
+    fn();
+    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &at);
+    return (at.tv_nsec - t.tv_nsec) / 1000 + (at.tv_sec - t.tv_sec) * 1000000;
+}
+
+void vec_print(vector<int> v)
+{
+    printf("[");
+    for (int i = 0; i < (int)v.size(); ++i) {
+        cout << to_string(v[i]);
+        if (i < v.size() - 1)
+            printf(",");
+    }
+    printf("]\n");
+}
+
+std::string ws2s(const std::wstring& wstr)
+{
+    using convert_typeX = std::codecvt_utf8<wchar_t>;
+    std::wstring_convert<convert_typeX, wchar_t> converterX;
+
+    return converterX.to_bytes(wstr);
+}
+
 #endif /* ifndef UTIL_H */

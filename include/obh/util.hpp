@@ -32,4 +32,7 @@ vec2i dir_vecs[4] = { { -1, 0 }, { 0, 1 }, { 1, 0 }, { 0, -1 } };
 vec2i dir_vec(int d) { return dir_vecs[d]; }
 vec2i dir_vec(DIR d) { return dir_vecs[d]; }
 
+void vec_print(std::vector<int> v);
+u64 timefn(void (*fn)(void));
+
 #endif
