@@ -35,4 +35,10 @@ vec2i dir_vec(DIR d) { return dir_vecs[d]; }
 void vec_print(std::vector<int> v);
 u64 timefn(void (*fn)(void));
 
+struct vertex {
+    int dist;
+    vec2i pos;
+};
+int operator<(const vertex& a, const vertex& b) { return a.dist < b.dist; }
+
 #endif

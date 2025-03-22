@@ -536,7 +536,66 @@ string decode_rail_fence_cipher(const string &str, int n)
     return s;
 }
 
+string format_duration(int seconds)
+{
+    if (seconds < 1) {
+        return "now";
+    }
 
+    string u[] = { "year", "day", "hour", "minute", "second" };
+    int us[] = { INT32_MAX, 365 * 24 * 60 * 60, 24 * 60 * 60, 60 * 60, 60, 1 };
+
+    vector<int> ts;
+    vector<string> units;
+
+    for (int i = 0; i < 5; ++i) {
+        int t = (seconds % us[i]) / us[i + 1];
+        if (t > 0) {
+            ts.push_back(t);
+            units.push_back(u[i]);
+        }
+    }
+
+    string str;
+
+    for (size_t i = 0; i < ts.size(); ++i) {
+        if (i == ts.size() - 1 && ts.size() > 1) {
+            str += " and ";
+        } else if (i > 0) {
+            str += ", ";
+        }
+        str += to_string(ts[i]) + " " + units[i] + (ts[i] > 1 ? "s" : "");
+    }
+
+    return str;
+}
+
+template <typename T>
+void ssum(const T& t, double& sum)
+{
+    if constexpr (is_same_v<T, char>) {
+        return;
+    }
+    if constexpr (is_arithmetic_v<T>) {
+        sum += t;
+    }
+}
+
+template <typename... Ts>
+double tuple_sum(const tuple<Ts...>& tpl)
+{
+    double sum = 0;
+
+    std::apply
+    (
+        [&sum](Ts const&... tupleArgs)
+        {
+            ((ssum(tupleArgs, sum)), ...);
+        }, tpl
+    );
+
+    return sum;
+}
 
 
 
