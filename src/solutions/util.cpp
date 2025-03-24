@@ -25,6 +25,28 @@ void vec_print(vector<int> v)
     printf("]\n");
 }
 
+int log2_floor(u64 n)
+{
+    int log = -1;
+    while (n > 0) {
+        ++log;
+        n /= 2;
+    }
+    return log;
+}
+
+string u64_print_bin(u64 n, int leading_zeroes)
+{
+    string bin_str;
+    for (int i = 0; n > 0; n /= 2) {
+        bin_str = (char)(((n >> i) & 1) + '0') + bin_str;
+    }
+    while (leading_zeroes-- > 0) {
+        bin_str = '0' + bin_str;
+    }
+    return bin_str;
+}
+
 std::string ws2s(const std::wstring& wstr)
 {
     using convert_typeX = std::codecvt_utf8<wchar_t>;
