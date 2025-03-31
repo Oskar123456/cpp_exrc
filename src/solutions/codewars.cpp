@@ -597,6 +597,62 @@ double tuple_sum(const tuple<Ts...>& tpl)
     return sum;
 }
 
+u64 n_choose_k(u64 n, u64 k)
+{
+    if (k == 0) {
+        return 1;
+    }
+    return (n * n_choose_k(n - 1, k - 1)) / k;
+}
+
+map<int, u64> exp_sum_mem;
+map<pair<int, int>, u64> count_all_subset_sums_mem;
+
+void gen_all_subset_sums(int target, int idx, vector<vector<int>>& subsets, vector<int>& current_subset)
+{
+    if (target == 0) {
+        subsets.push_back(current_subset);
+        return;
+    }
+    for (int i = idx; target - i >= 0; ++i) {
+        current_subset.push_back(i);
+        gen_all_subset_sums(target - i, i, subsets, current_subset);
+        current_subset.pop_back();
+    }
+}
+
+u64 count_all_subset_sums(int target, int idx)
+{
+    if (count_all_subset_sums_mem.count(make_pair(target, idx))) {
+        return count_all_subset_sums_mem[make_pair(target, idx)];
+    }
+
+    if (target == 0) {
+        return 1;
+    }
+
+    u64 retval = 0;
+
+    for (int i = idx; target - i >= 0; ++i) {
+        retval += count_all_subset_sums(target - i, i);
+    }
+
+    count_all_subset_sums_mem[make_pair(target, idx)] = retval;
+
+    /* cout << "mem'ing count_all_subset_sums(" << target << "," << idx << ")" << " : " << retval << endl; */
+
+    return retval;
+}
+
+u64 exp_sum(unsigned int n)
+{
+    if (exp_sum_mem.count(n)) {
+        return exp_sum_mem[n];
+    }
+    u64 ans = count_all_subset_sums(n, 1);
+    exp_sum_mem[n] = ans;
+    return ans;
+}
 
 
 
