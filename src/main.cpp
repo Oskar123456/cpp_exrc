@@ -17,101 +17,78 @@ License:            none
 
 using namespace std;
 
-vector<vector<int>> pyramid(size_t n)
+void print_bool_array(bool arr[], int len)
 {
-    vector<vector<int>> pyramid;
-    for (int i = 1; i <= n; ++i) {
-        pyramid.push_back(vector<int>(i, 1));
+    printf("[");
+    for (int i = 0; i < len; ++i) {
+        printf("%d", arr[i]);
+        if (i < len - 1) {
+            printf(" ");
+        }
     }
-    return pyramid;
+    printf("]\n");
 }
 
-set<u64> hamber_mem;
-
-void init_hamber_mem(int n)
+void check_digits(unsigned n, bool digits[])
 {
-    hamber_mem.clear();
-
-    priority_queue<u64, vector<u64>, greater<u64>> q;
-    q.push(1);
-
-    while (hamber_mem.size() < 13'282) {
-        u64 m = q.top(); q.pop();
-
-        while (q.top() == m && q.size() > 1) {
-            q.pop();
-        }
-
-        hamber_mem.insert(m);
-
-        if (m <= UINT64_MAX / 2)
-            q.push(m * 2);
-        if (m <= UINT64_MAX / 3)
-            q.push(m * 3);
-        if (m <= UINT64_MAX / 5)
-            q.push(m * 5);
+    if (n == 0) {
+        digits[0] = true;
+    }
+    while (n > 0) {
+        digits[n % 10] = true;
+        n /= 10;
     }
 }
 
-u64 hamber(int n)
+unsigned integer_depth(unsigned n)
 {
-    if (n < 0) {
-        return -1;
+    if (n == 0) {
+        return (unsigned)-1;
     }
 
-    if (hamber_mem.size() < n) {
-        init_hamber_mem(n);
+    unsigned nn = n, i;
+    bool done = false;
+    bool digits[10] = { 0 };
+
+    for (i = 0; !done; nn += n, ++i) {
+        check_digits(nn, digits);
+
+        done = true;
+        for (int j = 0; j < 10; ++j) {
+            if (!digits[j]) {
+                done = false;
+            }
+        }
     }
 
-    auto it = hamber_mem.begin();
-    advance(it, n - 1);
-    return *it;
+    return i;
 }
 
-vector<int> deleteNth(vector<int> arr, int n)
+bool isPrime(int num)
 {
-    vector<int> arr_trimmed;
-    map<int, int> arr_freqs;
+    if ((num != 2 && !(num % 2)) || num < 2) {
+        return false;
+    }
 
-    for (int i = 0; i < arr.size(); ++i) {
-        if (arr_freqs.count(arr[i]) == 0) {
-            arr_freqs[arr[i]] = 1;
-        } else {
-            arr_freqs[arr[i]]++;
-        }
-        if (arr_freqs[arr[i]] <= n) {
-            arr_trimmed.push_back(arr[i]);
+    int num_sqr = (int)sqrt(num);
+    for (int i = 3; i <= num_sqr; i += 2) {
+        if (!(num % i)) {
+            return false;
         }
     }
 
-    return arr_trimmed;
-}
-
-/* using i64 = long long; */
-
-int persistence(i64 n)
-{
-    int retval = 0;
-
-    while (n >= 10) {
-        i64 product = 1;
-        i64 nn = n;
-        while (nn > 0) {
-            product *= nn % 10;
-            nn /= 10;
-        }
-        n = product;
-        retval++;
-        cout << n << ", ";
-    }
-    cout << " : " << retval << endl;
-
-    return retval;
+    return true;
 }
 
 int main(int argc, char *argv[])
 {
-    persistence(39);
+    for (int i = 0; i < 50; ++i) {
+        cout << "MySolution.computeDepth(" << i << ") = " << integer_depth(i) << endl;
+    }
+
+    for (int i = 0; i < 50; ++i) {
+        cout << "isPrime(" << i << ") = " << isPrime(i) << endl;
+    }
 
     return 0;
 }
