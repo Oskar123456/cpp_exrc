@@ -80,15 +80,29 @@ bool isPrime(int num)
     return true;
 }
 
+bool scramble(const string& s1, const string& s2)
+{
+    int arr[1 << 8] = { 0 };
+    memset(arr, 0, (1 << 8) * sizeof(int));
+    for (char c : s2) {
+        arr[(int)c]++;
+    }
+    for (char c : s1) {
+        arr[(int)c]--;
+    }
+    for (int i = 0; i < 1 << 8; ++i) {
+        if (arr[i] > 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
 int main(int argc, char *argv[])
 {
-    for (int i = 0; i < 50; ++i) {
-        cout << "MySolution.computeDepth(" << i << ") = " << integer_depth(i) << endl;
-    }
-
-    for (int i = 0; i < 50; ++i) {
-        cout << "isPrime(" << i << ") = " << isPrime(i) << endl;
-    }
+    cout << scramble("rkqodlw", "world") << endl;
+    cout << scramble("cedewaraaossoqqyt", "codewars") << endl;
+    cout << scramble("katas", "steak") << endl;
 
     return 0;
 }
